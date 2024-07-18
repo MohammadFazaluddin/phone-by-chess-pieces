@@ -1,19 +1,7 @@
 ﻿using System.Reflection.Metadata.Ecma335;
 
-namespace ChessPieces
+namespace ChessPieces.pieces
 {
-    public enum MoveDirection
-    {
-        _,
-        UpLeft, 
-        Up, // 2
-        UpRight,
-        Right, // 4
-        DownRight,
-        Down, // 6
-        DownLeft,
-        Left, // 8
-    }
     public class Piece
     {
         protected virtual MoveDirection[] Moves { get; } = [];
@@ -35,8 +23,8 @@ namespace ChessPieces
 
             if ((int)dir % 2 == 0)
             {
-                GetStdMovements(ref row, ref col, dir, (int)steps); 
-            } 
+                GetStdMovements(ref row, ref col, dir, (int)steps);
+            }
             else
             {
                 GetDiaMovements(ref row, ref col, dir, steps);
@@ -68,7 +56,7 @@ namespace ChessPieces
             // for knight's half step
             bool shiftHalf = false;
 
-            if (Math.Abs(steps % 1) > (Double.Epsilon * 100))
+            if (Math.Abs(steps % 1) > double.Epsilon * 100)
             {
                 shiftHalf = true;
             }
@@ -100,57 +88,5 @@ namespace ChessPieces
 
         }
 
-    }
-
-    public class Rook : Piece
-    {
-        protected override MoveDirection[] Moves { get; } = [ MoveDirection.Up, MoveDirection.Down,
-                                                                MoveDirection.Left, MoveDirection.Right ];
-        public override float Step { get; } = -1;
-
-    }
-
-    public class Knight : Piece
-    {
-        protected override MoveDirection[] Moves { get; } = [ MoveDirection.UpRight, MoveDirection.UpLeft,
-                                                                MoveDirection.DownRight, MoveDirection.DownLeft];
-
-        public override float Step { get; } = 2.5F;
-
-    }
-
-    public class Queen : Piece
-    {
-        protected override MoveDirection[] Moves { get; } = [   MoveDirection.Up, MoveDirection.Down,
-                                                                MoveDirection.UpRight, MoveDirection.UpLeft,
-                                                                MoveDirection.Left, MoveDirection.Right,
-                                                                MoveDirection.DownRight, MoveDirection.DownLeft];
-
-        public override float Step { get; } = -1;
-
-    }
-
-    public class Bishop : Piece
-    {
-        protected override MoveDirection[] Moves { get; } = [   MoveDirection.UpRight, MoveDirection.UpLeft,
-                                                                MoveDirection.DownRight, MoveDirection.DownLeft];
-
-        public override float Step { get; } = -1;
-    }
-    public class King : Piece
-    {
-        protected override MoveDirection[] Moves { get; } = [ MoveDirection.Up, MoveDirection.Down,
-                                                                MoveDirection.UpRight, MoveDirection.UpLeft,
-                                                                MoveDirection.Left, MoveDirection.Right,
-                                                                MoveDirection.DownRight, MoveDirection.DownLeft];
-
-        public override float Step { get; } = 1;
-    }
-
-    public class Pawn : Piece
-    {
-        protected override MoveDirection[] Moves { get; } = [ MoveDirection.Up ];
-
-        public override float Step { get; } = 1;
     }
 }

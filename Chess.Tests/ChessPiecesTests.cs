@@ -1,4 +1,4 @@
-﻿using ChessPieces;
+﻿using ChessPieces.pieces;
 using Xunit;
 
 namespace Chess.Tests
