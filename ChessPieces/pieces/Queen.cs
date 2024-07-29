@@ -1,13 +1,25 @@
-﻿namespace ChessPieces.pieces
+﻿
+namespace ChessPieces.pieces
 {
     public class Queen : Piece
     {
-        protected override MoveDirection[] Moves { get; } = [   MoveDirection.Up, MoveDirection.Down,
-                                                                MoveDirection.UpRight, MoveDirection.UpLeft,
-                                                                MoveDirection.Left, MoveDirection.Right,
-                                                                MoveDirection.DownRight, MoveDirection.DownLeft];
+        public Queen(char[,] keypad) : base(keypad)
+        {
+        }
 
-        public override float Step { get; } = -1;
+        protected override Dictionary<char, List<char>> GetMoves(char[,] keypad)
+        {
+            var rookMoves = new Rook(keypad);
+            var bishopMoves = new Bishop(keypad);
+            var queenMoves = new Dictionary<char, List<char>>();
 
+            foreach (var key in rookMoves.Moves.Keys)
+            {
+                queenMoves[key] = rookMoves.Moves[key].Concat(bishopMoves.Moves[key]).ToList();
+
+            }
+
+            return queenMoves;
+        }
     }
 }

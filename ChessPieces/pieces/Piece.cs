@@ -2,91 +2,15 @@
 
 namespace ChessPieces.pieces
 {
-    public class Piece
+    public abstract class Piece
     {
-        protected virtual MoveDirection[] Moves { get; } = [];
+        public Dictionary<char, List<char>> Moves { get; protected set; }
 
-        // -1 for till the end of rim, and rest depending on the count. 
-        public virtual float Step { get; } = 0;
-
-        public (int, int) MovePiece(int row, int col, MoveDirection dir, float steps = 0)
+        protected Piece(char[,] keypad)
         {
-            if (!Moves.Contains(dir))
-            {
-                return (-1, -1);
-            }
-
-            if (Step >= 0)
-            {
-                steps = Step;
-            }
-
-            if ((int)dir % 2 == 0)
-            {
-                GetStdMovements(ref row, ref col, dir, (int)steps);
-            }
-            else
-            {
-                GetDiaMovements(ref row, ref col, dir, steps);
-            }
-
-            return (row, col);
+            Moves = GetMoves(keypad);    
         }
 
-        protected int GetStdMovements(ref int row, ref int col, MoveDirection dir, int steps)
-        {
-            return dir switch
-            {
-                MoveDirection.Up => row -= steps,
-                MoveDirection.Down => row += steps,
-                MoveDirection.Right => col += steps,
-                MoveDirection.Left => col -= steps,
-                MoveDirection._ => throw new InvalidCastException("Invalid Move"),
-                MoveDirection.UpLeft => throw new InvalidCastException("Invalid Move"),
-                MoveDirection.UpRight => throw new InvalidCastException("Invalid Move"),
-                MoveDirection.DownRight => throw new InvalidCastException("Invalid Move"),
-                MoveDirection.DownLeft => throw new InvalidCastException("Invalid Move"),
-                _ => throw new InvalidCastException("Invalid Move"),
-            };
-
-        }
-
-        protected void GetDiaMovements(ref int row, ref int col, MoveDirection dir, float steps)
-        {
-            // for knight's half step
-            bool shiftHalf = false;
-
-            if (Math.Abs(steps % 1) > double.Epsilon * 100)
-            {
-                shiftHalf = true;
-            }
-
-            if (dir == MoveDirection.UpRight)
-            {
-                row -= (int)steps;
-                col += shiftHalf ? 1 : (int)steps;
-            }
-            else if (dir == MoveDirection.UpLeft)
-            {
-                row -= (int)steps;
-                col -= shiftHalf ? 1 : (int)steps;
-            }
-            else if (dir == MoveDirection.DownRight)
-            {
-                row += (int)steps;
-                col += shiftHalf ? 1 : (int)steps;
-            }
-            else if (dir == MoveDirection.DownLeft)
-            {
-                row += (int)steps;
-                col -= shiftHalf ? 1 : (int)steps;
-            }
-            else
-            {
-                throw new InvalidCastException("Invalid Move");
-            }
-
-        }
-
+        protected abstract Dictionary<char, List<char>> GetMoves(char[,] keypad);
     }
 }
